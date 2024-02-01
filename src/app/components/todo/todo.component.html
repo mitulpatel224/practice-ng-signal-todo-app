@@ -1,0 +1,72 @@
+<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">
+      Todo List ( {{ totalPendingItems().length }} )
+    </h1>
+    <p class="col-md-8 fs-6">
+      This is an example app to maintain todos for the day using Angular
+      Signals!
+    </p>
+    <!-- todo form -->
+    <form
+      #form="ngForm"
+      [ngFormOptions]="{ updateOn: 'blur' }"
+      (ngSubmit)="addTask(form)"
+    >
+      <div class="row align-items-center justify-content-between mb-4">
+        <div class="col">
+          <div class="form-floating">
+            <input
+              ngModel
+              name="task"
+              type="text"
+              id="task"
+              class="form-control border-0 border-bottom rounded-0 bg-transparent"
+              placeholder="Add your task here"
+              aria-label="task"
+              required
+              [ngClass]="{
+                'is-invalid': form.submitted && form.controls['task'].invalid
+              }"
+            />
+            <label class="bg-transparent" for="task">
+              Add your task here
+            </label>
+          </div>
+        </div>
+        <div class="col">
+          <button class="btn btn-dark btn-lg" type="submit">Add</button>
+        </div>
+        <div
+          class="col-12 invalid-feedback"
+          [ngClass]="{
+            'd-block': form.submitted && form.controls['task'].invalid
+          }"
+        >
+          This field is required
+        </div>
+      </div>
+    </form>
+
+    <!-- todo task list -->
+    <div class="d-flex flex-column">
+      <!-- // Loop over saved todos -->
+      <div *ngFor="let todo of todoList(); let i = index" class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="todo.status"
+          (change)="taskChecked(i, todo)"
+          id="task-{{ todo.id }}"
+        />
+        <label
+          class="form-check-label"
+          for="task-{{ todo.id }}"
+          [ngClass]="{ 'fw-lighter text-decoration-line-through': todo.status }"
+        >
+          {{ todo.task }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
